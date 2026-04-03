@@ -5,75 +5,188 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ghana Giveaway Spin</title>
 <style>
-body {
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
-  text-align: center;
-  padding: 20px;
-}
+  body {
+    font-family: 'Arial', sans-serif;
+    background: #ffffff;
+    color: #222;
+    text-align: center;
+    padding: 20px;
+    overflow-x: hidden;
+  }
 
-h1 {
-  color: #22c55e;
-}
+  h1 {
+    color: #1e3a8a;
+    margin-bottom: 5px;
+  }
 
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 10px;
-  background: #22c55e;
-  color: black;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 20px;
-}
+  p {
+    font-size: 18px;
+    color: #374151;
+  }
 
-#wheel {
-  margin: 40px auto;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  border: 8px solid #22c55e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 15px;
+    transition: transform 0.2s;
+  }
 
-#result {
-  margin-top: 20px;
-  font-size: 20px;
-}
+  button:hover {
+    transform: scale(1.1);
+  }
+
+  .btn-spin {
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+    color: white;
+  }
+
+  .btn-claim {
+    background: linear-gradient(90deg, #facc15, #f87171);
+    color: white;
+  }
+
+  #wheel-container {
+    margin: 40px auto;
+    width: 250px;
+    height: 250px;
+    position: relative;
+  }
+
+  #wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 10px solid #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
+    background: conic-gradient(
+      #f87171 0deg 60deg,
+      #facc15 60deg 120deg,
+      #34d399 120deg 180deg,
+      #60a5fa 180deg 240deg,
+      #a78bfa 240deg 300deg,
+      #f472b6 300deg 360deg
+    );
+    color: #fff;
+    position: relative;
+  }
+
+  #wheel::before {
+    content: '🎁';
+    position: absolute;
+    font-size: 40px;
+  }
+
+  #result {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background: #f59e0b;
+    z-index: 999;
+    animation: fall 3s linear forwards;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(0) rotate(0deg); opacity:1; }
+    100% { transform: translateY(100vh) rotate(360deg); opacity:0; }
+  }
+
+  #reviews {
+    margin-top: 40px;
+  }
+
+  .review {
+    background: #e0f2fe;
+    padding: 10px 15px;
+    margin: 10px auto;
+    width: 80%;
+    border-radius: 10px;
+    color: #1e3a8a;
+  }
 </style>
 </head>
 <body>
 
+<script>
+  // Welcome popup
+  alert("💰 You have been chosen! 💰");
+</script>
+
 <h1>🇬🇭 Ghana Spin & Win</h1>
-<p>Spin and win airtime, data & more!</p>
+<p>Spin and win cash, phones, airtime, mystery prizes & more! 💵🎁📱</p>
 
-<div id="wheel">🎁</div>
+<div id="wheel-container">
+  <div id="wheel"></div>
+</div>
 
-<button onclick="spin()">SPIN</button>
+<button class="btn-spin" onclick="spin()">SPIN NOW 💸</button>
 
 <div id="result"></div>
 
+<div id="reviews">
+  <h2>Reviews 📝</h2>
+  <div class="review">"I won ₵20 Airtime! Amazing!" - Nana K.</div>
+  <div class="review">"Got a free phone! Highly recommend 🎉" - Ama S.</div>
+  <div class="review">"Such a fun spin wheel, won mystery gift 🎁" - Kwame T.</div>
+</div>
+
 <script>
-function spin() {
   const rewards = [
-    "₵5 Airtime",
-    "₵10 Airtime",
-    "1GB Data",
-    "Better Luck Next Time",
-    "₵20 Airtime",
-    "Free Gift 🎁"
+    "₵5 Airtime 💵",
+    "₵10 Airtime 💸",
+    "1GB Data 📶",
+    "Better Luck Next Time 🍀",
+    "₵20 Airtime 💰",
+    "Free Gift 🎁",
+    "Smartphone 📱",
+    "Car 🚗",
+    "Mystery Prize 🎁"
   ];
 
-  const win = rewards[Math.floor(Math.random() * rewards.length)];
+  function spin() {
+    const wheel = document.getElementById("wheel");
+    const resultDiv = document.getElementById("result");
 
-  document.getElementById("result").innerHTML =
-    "🎉 You got: " + win + "<br><br>" +
-    "<a href='https://chat.whatsapp.com/YOUR-LINK' target='_blank'>" +
-    "<button>Claim Reward</button></a>";
-}
+    // Random rotation between 5 and 15 spins
+    const randomDegree = Math.floor(Math.random() * 360) + 1440;
+    wheel.style.transform = `rotate(${randomDegree}deg)`;
+
+    // Wait for spin animation to finish (4s)
+    setTimeout(() => {
+      const win = rewards[Math.floor(Math.random() * rewards.length)];
+      resultDiv.innerHTML = `🎉 You won: ${win} <br><br>` +
+        `<button class="btn-claim" onclick="claimReward()">Claim Reward 💌</button>`;
+      launchConfetti();
+    }, 4000);
+  }
+
+  function claimReward() {
+    window.open('https://chat.whatsapp.com/YOUR-LINK', '_blank');
+  }
+
+  function launchConfetti() {
+    for (let i = 0; i < 50; i++) {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+      confetti.style.animationDuration = 2 + Math.random() * 2 + 's';
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 3000);
+    }
+  }
 </script>
 
 </body>
